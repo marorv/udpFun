@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-import random
-import time
 import socket
 
 #UDP_IP = "10.42.0.2"

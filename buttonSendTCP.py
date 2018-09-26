@@ -3,8 +3,8 @@ from tkinter import ttk
 
 import socket
 
-TCP_IP = "10.42.0.191"
-TCP_PORT = 4445
+TCP_IP = "192.168.43.250"
+TCP_PORT = 4444 #Send
 BUFFER_SIZE = 1024
 MESSAGE = "Hello, World!\n"
 
@@ -40,9 +40,19 @@ class GraphPage(tk.Frame):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT)) 
         s.send(MESSAGE.encode()) 
-        #data = s.recv(BUFFER_SIZE) 
+        data = s.recv(BUFFER_SIZE) 
         s.close()
-        #print("Received data:", data)
+        print("Received data:", data)
+
+    def recvTCP():
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((TCP_IP, TCP_PORT))
+        s.send(MESSAGE)
+        data = s.recv(BUFFER_SIZE)
+        s.close()
+
+        print("received data:", data)
+
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -51,7 +61,10 @@ class GraphPage(tk.Frame):
 
         button1 = ttk.Button(self, text="Send a TCP message to " + str(TCP_IP) + ":" + str(TCP_PORT),
                             command=lambda: GraphPage.sendTCP() )
-        button1.pack()        
+        button1.pack()   
+
+        button2 = ttk.Button(self, text="Receive a TCP message", command=lambda: GraphPage.sendTCP() )
+        button2.pack()       
 
 app = TCPButtonapp()
 app.mainloop()
