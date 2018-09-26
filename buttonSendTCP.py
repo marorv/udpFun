@@ -5,7 +5,7 @@ import socket
 
 TCP_IP = "192.168.43.250"
 TCP_PORT = 4444 #Send
-BUFFER_SIZE = 1024
+BUFFER_SIZE = 10
 MESSAGE = "Hello, World!\n"
 
 LARGE_FONT= ("Verdana", 12)            
@@ -36,22 +36,23 @@ class TCPButtonapp(tk.Tk):
     
 class GraphPage(tk.Frame):
 
-    def sendTCP():
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((TCP_IP, TCP_PORT)) 
-        s.send(MESSAGE.encode()) 
-        data = s.recv(BUFFER_SIZE) 
-        s.close()
-        print("Received data:", data)
 
     def recvTCP():
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
-        s.send(MESSAGE)
+        print("Before recv")
         data = s.recv(BUFFER_SIZE)
+        print("After recv")
         s.close()
 
         print("received data:", data)
+        
+    def sendTCP():
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((TCP_IP, TCP_PORT)) 
+        s.send(MESSAGE.encode()) 
+        s.close()
+        GraphPage.recvTCP()
 
 
     def __init__(self, parent, controller):
