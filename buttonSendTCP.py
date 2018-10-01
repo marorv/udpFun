@@ -3,11 +3,18 @@ from tkinter import ttk
 
 import socket
 
+<<<<<<< HEAD
 #TCP_IP = '192.168.0.160'
 TCP_IP = '127.0.0.1'
 TCP_PORT = 4445
 BUFFER_SIZE = 1024
 MESSAGE = 'Hello, World!\n'
+=======
+TCP_IP = "192.168.43.250"
+TCP_PORT = 4444 #Send
+BUFFER_SIZE = 10
+MESSAGE = "Hello, World!\n"
+>>>>>>> e9c43c190549f424bb21f4890a260354bf08d2f1
 
 LARGE_FONT= ("Verdana", 12)            
 
@@ -53,7 +60,6 @@ class GraphPage(tk.Frame):
         conn.close()
         rs.close()
         s.close()
-
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
