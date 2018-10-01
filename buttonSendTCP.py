@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 
 import socket
+import time
+
 
 TCP_IP = '192.168.0.160'
 TCP_PORT = 4445
@@ -37,21 +39,30 @@ class TCPButtonapp(tk.Tk):
 class GraphPage(tk.Frame):
 
     def sendTCP():
+        start = time.time()
+
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((TCP_IP, TCP_PORT))
-        s.send(MESSAGE.encode())
-        rs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        rs.bind(('', 4444))
-        rs.listen(1)
-        conn, addr = rs.accept()
-        print ('Connection address:', addr)
-        while 1:
-            data = conn.recv(BUFFER_SIZE)
-            if not data: break
-            print ("received data:", data.decode())
-        conn.close()
-        rs.close()
-        s.close()
+        try:
+            s.connect((TCP_IP, TCP_PORT))
+            s.send(MESSAGE.encode())
+            rs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            rs.bind(('', 4444))
+            rs.listen(1)
+            conn, addr = rs.accept()
+            print ('Connection address:', addr)
+            while 1:
+                data = conn.recv(BUFFER_SIZE)
+                if not data: break
+                print ("received data:", data.decode())
+            conn.close()
+            rs.close()
+            s.close()
+
+        except OSError:
+            print('Could not connect.')
+
+        end = time.time()
+        print('Wall time elapsed in TCP function was %.3fs' % (end - start))
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
