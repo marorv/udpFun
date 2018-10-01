@@ -3,10 +3,11 @@ from tkinter import ttk
 
 import socket
 
-TCP_IP = "192.168.43.250"
-TCP_PORT = 4444 #Send
+#TCP_IP = '192.168.0.160'
+TCP_IP = '127.0.0.1'
+TCP_PORT = 4445
 BUFFER_SIZE = 1024
-MESSAGE = "Hello, World!\n"
+MESSAGE = 'Hello, World!\n'
 
 LARGE_FONT= ("Verdana", 12)            
 
@@ -38,20 +39,20 @@ class GraphPage(tk.Frame):
 
     def sendTCP():
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((TCP_IP, TCP_PORT)) 
-        s.send(MESSAGE.encode()) 
-        data = s.recv(BUFFER_SIZE) 
-        s.close()
-        print("Received data:", data)
-
-    def recvTCP():
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
-        s.send(MESSAGE)
-        data = s.recv(BUFFER_SIZE)
+        s.send(MESSAGE.encode())
+        rs = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        rs.bind(('', 4444))
+        rs.listen(1)
+        conn, addr = rs.accept()
+        print ('Connection address:', addr)
+        while 1:
+            data = conn.recv(BUFFER_SIZE)
+            if not data: break
+            print ("received data:", data.decode())
+        conn.close()
+        rs.close()
         s.close()
-
-        print("received data:", data)
 
 
     def __init__(self, parent, controller):
